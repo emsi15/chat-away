@@ -9,7 +9,7 @@
 		<p>
 		<label>Who are you? </label><br /><input type="text" value='Chatter' id='username' /><br />
 		</p>
-		<button id='connect'>Connect</button>
+		<button id='connect'>Connect</button><span id='feedback'></span>
 	</p>
 	</div>
 	<div id="settings">

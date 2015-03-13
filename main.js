@@ -5,7 +5,7 @@
         socket,
         username = '';
 
-    function display(msg) {
+    function displayInChatInChat(msg) {
         $('#log').append(new Date().toLocaleTimeString() + ': '+msg+'<br/>');
     }
 
@@ -14,6 +14,10 @@
         $('#username').prop('disabled', userField);
         $('#connect').prop('disabled', connectButton);
         $('#disconnect').prop('disabled', disconnectButton);
+    }
+
+    function printFeedback(feedback) {
+        $('#feedback').html(feedback);
     }
 
     function toggleVisibility() {
@@ -35,28 +39,29 @@
 
         socket.on('username taken', function() {
             socket.disconnect();
+            printFeedback('Username ' + username + ' is already talking, please select another name');
         });
 
         socket.on('display chat', function() {
             toggleVisibility();
-            display('You are now connected!');
+            displayInChat('You are now connected!');
             disableFields(true, true, true, false);
         });
 
         socket.on('new message', function(data){
-            display(data.user + ': ' + data.message);
+            displayInChat(data.user + ': ' + data.message);
         });
 
         socket.on('me', function(data){
-            display('** '+ data.user + data.message);
+            displayInChat('** '+ data.user + data.message);
         });
 
         socket.on('user joined', function (data) {
-            display(data + ' joined the chat');
+            displayInChat(data + ' joined the chat');
         }); 
 
         socket.on('user left', function (data) {
-            display(data + ' left the chat');
+            displayInChat(data + ' left the chat');
         }); 
 
         socket.io.on('connect_error', function(err) {
@@ -74,7 +79,7 @@
 
      $('#disconnect').on('click', function(event) {
          if (socket) socket.disconnect();
-         display('Disconnected');
+         displayInChat('Disconnected');
          disableFields(false, false, false, true);
          toggleVisibility();
      });
@@ -97,9 +102,8 @@
         if (message.match("^/me ")) {
             socket.emit('me', clean(message).substring(3));
         } else {
-            display('Unknown command');
+            displayInChat('Unknown command');
         }
-        //switch for easy adding of new cases
     }
 
     function clean(str) {
