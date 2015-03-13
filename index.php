@@ -1,11 +1,14 @@
-﻿<?php $title='Chatter - Beta'; include(__DIR__ . '/../mall/header.php'); ?>
+﻿<?php $title='Talk! Talk! Talk!'; include(__DIR__ . '/../mall/header.php'); ?>
  
 <div id='flash'>
-	<h2>Chatter</h2>
+	<h1>Talk! Talk! Talk!</h1>
 	<div id="setup">
 	<p>
-		<label>Server: </label><input id='url' value='localhost:1337'/><br />
-		<label>Username: </label><input type="text" value='Chatter' id='username' /><br />
+		<label>Host: </label><input id='url' value='localhost'/>
+		<label>Port: </label><input id='port' value='1337' /><br />
+		<p>
+		<label>Who are you? </label><br /><input type="text" value='Chatter' id='username' /><br />
+		</p>
 		<button id='connect'>Connect</button>
 	</p>
 	</div>

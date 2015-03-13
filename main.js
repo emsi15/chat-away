@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     "use strict";
     var url = document.getElementById('url'),
+        port = document.getElementById('port'),
         socket,
         username = '';
 
@@ -23,15 +24,22 @@
 
 
     $('#connect').on('click', function(event) {
-        console.log('Connecting to: ' + url.value);
+        console.log('Connecting to: ' + url.value + ' port: ' + port.value);
         username = $('#username').val();
 
-        socket = io.connect(url.value, {'forceNew':true });
+        socket = io.connect(url.value+':'+port.value, {'forceNew':true });
 
         socket.on('connect', function() {
+            socket.emit('new user', username);
+        });
+
+        socket.on('username taken', function() {
+            socket.disconnect();
+        });
+
+        socket.on('display chat', function() {
             toggleVisibility();
             display('You are now connected!');
-            socket.emit('new user', username);
             disableFields(true, true, true, false);
         });
 
