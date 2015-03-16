@@ -5,7 +5,7 @@
         socket,
         username = '';
 
-    function displayInChatInChat(msg) {
+    function displayInChat(msg) {
         $('#log').append(new Date().toLocaleTimeString() + ': '+msg+'<br/>');
     }
 
@@ -26,6 +26,14 @@
         $('#setup').toggle();
     }
 
+    function updateUsers(users) {
+        var userList = $('<span>');
+        $.each(users, function(i, val) {
+            userList.append('<span>'+val+'</span><br />');
+        });
+        $('#users').html(userList);
+    }
+
 
     $('#connect').on('click', function(event) {
         console.log('Connecting to: ' + url.value + ' port: ' + port.value);
@@ -42,10 +50,11 @@
             printFeedback('Username ' + username + ' is already talking, please select another name');
         });
 
-        socket.on('display chat', function() {
+        socket.on('init chat', function(data) {
             toggleVisibility();
             displayInChat('You are now connected!');
             disableFields(true, true, true, false);
+            updateUsers(data);
         });
 
         socket.on('new message', function(data){
@@ -57,11 +66,13 @@
         });
 
         socket.on('user joined', function (data) {
-            displayInChat(data + ' joined the chat');
+            displayInChat(data.user + ' joined the chat');
+            updateUsers(data.users);
         }); 
 
         socket.on('user left', function (data) {
-            displayInChat(data + ' left the chat');
+            displayInChat(data.user + ' left the chat');
+            updateUsers(data.users);
         }); 
 
         socket.io.on('connect_error', function(err) {

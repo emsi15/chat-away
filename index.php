@@ -16,7 +16,8 @@
 		<button disabled id='disconnect'>Disconnect</button>
 	</div>
 	<div id="chat">
-	<div id="log"></div>
+		<div id="log"></div>
+		<div id="users"></div>
 		<input type="text" placeholder="Write your message.." id='message' />
 	</div>
 </div>

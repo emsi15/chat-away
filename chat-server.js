@@ -12,8 +12,8 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     if(userConnected) {
       console.log(socket.username + ' disconnected');
-      socket.broadcast.emit('user left', socket.username);
       removeUser(socket.username);
+      socket.broadcast.emit('user left', {user: socket.username, users: usernames});
     }
   });
 
@@ -35,10 +35,10 @@ io.on('connection', function(socket){
     } else {
       usernames.push(username);
       socket.username = username;
-      socket.broadcast.emit('user joined', socket.username);
+      socket.broadcast.emit('user joined', {user: socket.username, users: usernames});
       console.log(socket.username + ' connected');  
       userConnected = true;
-      socket.emit('display chat');
+      socket.emit('init chat', usernames);
     }
   });
 
@@ -48,9 +48,9 @@ server.listen(port, function() {
     console.log('Server listening on port: ' + port);
 });
 
-function nameTaken(obj) {
+function nameTaken(name) {
     for (var i=0; i<usernames.length; i++) {
-      if (usernames[i] === obj) {
+      if (usernames[i] === name) {
         return true;
       }
     }
