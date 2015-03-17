@@ -31,6 +31,7 @@ io.on('connection', function(socket){
     if (data.recipient in usernames) {
       usernames[data.recipient].emit('private message', {user: socket.username, message: data.msg});
       console.log('pm sent to: ' + data.recipient + " msg: " + data.msg);
+      callback('[PM -> '+data.recipient+'] ' + data.msg);
     } else {
       callback('Error: User ' + data.recipient + ' is not in the chat');
     }
