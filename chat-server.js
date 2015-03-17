@@ -2,7 +2,7 @@ var port = 1337;
 var server = require('http').createServer();
 var io = require('socket.io')(server);
 
-var usernames = [];
+var usernames = {};
 
 io.origins('http://dbwebb.se:* http://localhost:* http://www.student.bth.se:*');
 
@@ -12,8 +12,8 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     if(userConnected) {
       console.log(socket.username + ' disconnected');
-      removeUser(socket.username);
-      socket.broadcast.emit('user left', {user: socket.username, users: usernames});
+      delete usernames[socket.username];
+      socket.broadcast.emit('user left', {user: socket.username, users: Object.keys(usernames)});
     }
   });
 
@@ -27,18 +27,26 @@ io.on('connection', function(socket){
     console.log('** ' + socket.username + msg);
   });
 
+  socket.on('private message', function(data, callback) {
+    if (data.recipient in usernames) {
+      usernames[data.recipient].emit('private message', {user: socket.username, message: data.msg});
+      console.log('pm sent to: ' + data.recipient + " msg: " + data.msg);
+    } else {
+      callback('Error: User ' + data.recipient + ' is not in the chat');
+    }
+  });
+
   socket.on('new user', function (username) {
-    console.log(usernames);
-    if (nameTaken(username)) {
+      if (username in usernames) {
       console.log('user already exists');
       socket.emit('username taken');
     } else {
-      usernames.push(username);
       socket.username = username;
-      socket.broadcast.emit('user joined', {user: socket.username, users: usernames});
+      usernames[socket.username] = socket;
+      socket.broadcast.emit('user joined', {user: socket.username, users: Object.keys(usernames)});
       console.log(socket.username + ' connected');  
       userConnected = true;
-      socket.emit('init chat', usernames);
+      socket.emit('init chat', Object.keys(usernames));
     }
   });
 

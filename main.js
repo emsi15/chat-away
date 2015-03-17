@@ -34,6 +34,13 @@
         $('#users').html(userList);
     }
 
+    function disconnectUser() {
+        if (socket) socket.disconnect();
+         displayInChat('Disconnected');
+         disableFields(false, false, false, true);
+         toggleVisibility();
+    }
+
 
     $('#connect').on('click', function(event) {
         console.log('Connecting to: ' + url.value + ' port: ' + port.value);
@@ -65,6 +72,10 @@
             displayInChat('** '+ data.user + data.message);
         });
 
+        socket.on('private message', function(data){
+            displayInChat('[PM] '+ data.user +': ' + data.message);
+        });
+
         socket.on('user joined', function (data) {
             displayInChat(data.user + ' joined the chat');
             updateUsers(data.users);
@@ -82,26 +93,22 @@
     });
 
     $(document).keypress(function(e) {
-        //Send message on enter
         if(e.which == 13) {
             processMessage(); 
         }
     });
 
      $('#disconnect').on('click', function(event) {
-         if (socket) socket.disconnect();
-         displayInChat('Disconnected');
-         disableFields(false, false, false, true);
-         toggleVisibility();
+         disconnectUser();
      });
 
     function processMessage() {
         var message = $('#message').val();
         //Do not do anything with empty messages
         if (message) {
-            //Check for function command starting with /, otherwise emit message.
+            //Check for function command starting with /, otherwise send ordinary message.
             if(message.match("^/")) {
-                commandControl(message);    
+                command(message);    
             } else {
                 socket.emit('new message', clean(message));                
             }
@@ -109,9 +116,21 @@
         }
     }
 
-    function commandControl(message) {
+    function privateMessage(msg) {
+        var parts = clean(msg).split(/[\s]+/);
+        var msgPart = Helper.indexJoin(parts, 2);
+        socket.emit('private message', {recipient: parts[1], msg: msgPart}, function(error) {
+            displayInChat(error);
+        });       
+    }
+
+    function command(message) {
         if (message.match("^/me ")) {
             socket.emit('me', clean(message).substring(3));
+        } else if (message.match("^/pm ")) {
+            privateMessage(message);
+        } else if (message === "/quit") {
+            disconnectUser();
         } else {
             displayInChat('Unknown command');
         }
