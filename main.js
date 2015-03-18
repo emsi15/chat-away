@@ -5,8 +5,8 @@
         socket,
         username = '';
 
-    function displayInChat(msg) {
-        $('#log').append(new Date().toLocaleTimeString() + ': '+msg+'<br/>');
+    function displayInChat(msg, style) {
+        $('#log').append('<span class='+style+'>['+ new Date().toLocaleTimeString() + '] '+msg+'</span><br/>');
     }
 
     function disableFields(urlField, userField, connectButton, disconnectButton) {
@@ -36,7 +36,7 @@
 
     function disconnectUser() {
         if (socket) socket.disconnect();
-         displayInChat('Disconnected');
+         displayInChat('Disconnected', 'info');
          disableFields(false, false, false, true);
          toggleVisibility();
     }
@@ -59,30 +59,30 @@
 
         socket.on('init chat', function(data) {
             toggleVisibility();
-            displayInChat('You are now connected!');
+            displayInChat('You are now connected!', 'info');
             disableFields(true, true, true, false);
             updateUsers(data);
         });
 
         socket.on('new message', function(data){
-            displayInChat(data.user + ': ' + data.message);
+            displayInChat(data.user + ': ' + data.message, 'msg');
         });
 
         socket.on('me', function(data){
-            displayInChat('** '+ data.user + data.message);
+            displayInChat('** '+ data.user + data.message, 'me');
         });
 
         socket.on('private message', function(data){
-            displayInChat('[PM] '+ data.user +': ' + data.message);
+            displayInChat('[PM] '+ data.user +': ' + data.message, 'pm');
         });
 
         socket.on('user joined', function (data) {
-            displayInChat(data.user + ' joined the chat');
+            displayInChat(data.user + ' joined the chat', 'info');
             updateUsers(data.users);
         }); 
 
         socket.on('user left', function (data) {
-            displayInChat(data.user + ' left the chat');
+            displayInChat(data.user + ' left the chat', 'info');
             updateUsers(data.users);
         }); 
 
@@ -119,8 +119,8 @@
     function privateMessage(msg) {
         var parts = clean(msg).split(/[\s]+/);
         var msgPart = Helper.indexJoin(parts, 2);
-        socket.emit('private message', {recipient: parts[1], msg: msgPart}, function(error) {
-            displayInChat(error);
+        socket.emit('private message', {recipient: parts[1], msg: msgPart}, function(callback) {
+            displayInChat(callback.msg, callback.style);
         });       
     }
 
@@ -132,7 +132,7 @@
         } else if (message === "/quit") {
             disconnectUser();
         } else {
-            displayInChat('Unknown command');
+            displayInChat('Unknown command', 'error');
         }
     }
 

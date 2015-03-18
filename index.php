@@ -13,12 +13,7 @@
 	</p>
 	</div>
 	<div id="settings">
-		<button disabled id='disconnect'>Disconnect</button>
-		Theme:
-		<select id="theme">
-			<option value="white">White</option>
-			<option value="black">Black out</option>
-		</select>
+		<button id='disconnect'>Leave the chat</button>
 	</div>
 	<div id="chat">
 		<div id="log"></div>
