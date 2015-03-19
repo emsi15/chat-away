@@ -3,6 +3,30 @@
  */
 @import "../mall/base.less";
 
+h3 {font-family:@font-family-helvetica;font-size:2.375em;line-height:1.1579;margin-bottom:@magic-number;
+	color: grey;
+	//font-weight:100;
+	//font-style:italic;
+}
+
+#chat-client {
+	background-color: #EFF8FB;
+	border-radius: 10px;
+	//border: 1px solid #BDBDBD;
+	padding: 10px;      
+    
+
+  //background: -webkit-linear-gradient(90deg, #83a4d4 10%, #b6fbff 90%); /* Chrome 10+, Saf5.1+ */
+  //background:    -moz-linear-gradient(90deg, #83a4d4 10%, #b6fbff 90%); /* FF3.6+ */
+  //background:     -ms-linear-gradient(90deg, #83a4d4 10%, #b6fbff 90%); /* IE10 */
+  //background:      -o-linear-gradient(90deg, #83a4d4 10%, #b6fbff 90%); /* Opera 11.10+ */
+  //background:         linear-gradient(90deg, #83a4d4 10%, #b6fbff 90%); /* W3C */
+        
+        
+        
+        
+}
+
 #chat {
 	display: none;
 }
@@ -12,18 +36,20 @@
 	padding: 3px;
 }
 
-#chat div {
-	background-color: #181818 ;
-	color: white;
-	border: 1px solid #aaa;
-	border-radius: 10px;
+#log {
+	background-color: white ;
+	color: black;
+	border-radius: 5px;
 	height:200px;
 	overflow: scroll;
 	overflow-y: auto;
 	overflow-x: auto;
 	font-size: small;
-	padding: 5px;
+	padding: 8px;
 	float: left;
+	-webkit-box-shadow: 1px 0px 5px 0px rgba(50, 50, 50, 0.3);
+    -moz-box-shadow:    1px 0px 5px 0px rgba(50, 50, 50, 0.3);
+    box-shadow:         1px 0px 5px 0px rgba(50, 50, 50, 0.3);
 }
 
 
@@ -33,11 +59,13 @@
 }
 
 #users {
-	width: 17%
+	width: 15%;
+	float: left;
+	padding-left: 20px;
 }
 
 #message {
-	width: 99%;
+	width: 80%;
 	border-radius: 10px;
 	padding: 5px;
 	margin-top: 5px;
@@ -49,14 +77,24 @@
 }
 
 .me {
-	color: #BF5FFF; //purple
+	color: #FF00FF; //purple/pink
 }
 
 .info {
-	color: #FFCC00; //yellow
+	color: grey;
 }
 
 .pm {
-	color: #00FF00; //green
+	color: #088A08; //#00FF00; //green
+}
+
+.users {
+	color: @greyLight;
+	font-weight: bold;
+}
+
+#userList {
+	font-size: 0.9em;
+	padding-left: 2px;
 }
 

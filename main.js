@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+$(document).ready(function () {
     "use strict";
     var url = document.getElementById('url'),
         port = document.getElementById('port'),
@@ -6,7 +6,9 @@
         username = '';
 
     function displayInChat(msg, style) {
-        $('#log').append('<span class='+style+'>['+ new Date().toLocaleTimeString() + '] '+msg+'</span><br/>');
+        var log = $('#log');
+        log.append('<span class='+style+'>['+ new Date().toLocaleTimeString() + '] '+msg+'</span><br/>');
+        log.scrollTop(log.prop('scrollHeight'));
     }
 
     function disableFields(urlField, userField, connectButton, disconnectButton) {
@@ -29,9 +31,9 @@
     function updateUsers(users) {
         var userList = $('<span>');
         $.each(users, function(i, val) {
-            userList.append('<span>'+val+'</span><br />');
+            userList.append('<br /><span>'+val+'</span>');
         });
-        $('#users').html(userList);
+        $('#userList').html(userList);
     }
 
     function disconnectUser() {
