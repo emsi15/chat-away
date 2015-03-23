@@ -1,7 +1,7 @@
 $(document).ready(function () {
     "use strict";
-    var url = document.getElementById('url'),
-        socket,
+    var socket,
+        host = '127.0.0.1:1337',
         username = '';
 
     function displayInChat(msg, style) {
@@ -10,11 +10,10 @@ $(document).ready(function () {
         log.scrollTop(log.prop('scrollHeight'));
     }
 
-    function disableFields(urlField, userField, connectButton, disconnectButton) {
+    function disableFields(urlField, userField, connectButton) {
         $('#url').prop('disabled', urlField);
         $('#username').prop('disabled', userField);
         $('#connect').prop('disabled', connectButton);
-        $('#disconnect').prop('disabled', disconnectButton);
     }
 
     function printFeedback(feedback) {
@@ -23,7 +22,6 @@ $(document).ready(function () {
 
     function toggleVisibility(logoClass) {
         $('#chat').toggle();
-        $('#settings').toggle();
         $('#setup').toggle();
         $('#logo').removeClass().addClass(logoClass);
     }
@@ -39,16 +37,16 @@ $(document).ready(function () {
     function disconnectUser() {
         if (socket) socket.disconnect();
          displayInChat('Disconnected', 'info');
-         disableFields(false, false, false, true);
+         disableFields(false, false, false);
          toggleVisibility('logo');
     }
 
 
     $('#connect').on('click', function(event) {
-        console.log('Connecting to: ' + url.value);
+
         username = $('#username').val();
 
-        socket = io.connect(url.value, {'forceNew':true });
+        socket = io.connect(host, {'forceNew':true });
 
         socket.on('connect', function() {
             socket.emit('new user', username);
@@ -62,7 +60,7 @@ $(document).ready(function () {
         socket.on('init chat', function(data) {
             toggleVisibility('logo-left');
             displayInChat('You are now connected, type /help for available commands.', 'info');
-            disableFields(true, true, true, false);
+            disableFields(true, true, true);
             updateUsers(data);
         });
 
