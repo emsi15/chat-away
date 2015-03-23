@@ -18,7 +18,7 @@ $(document).ready(function () {
     }
 
     function printFeedback(feedback) {
-        $('#feedback').html(feedback);
+        $('#feedback').html(feedback).addClass('feedback');
     }
 
     function toggleVisibility(logoClass) {
@@ -56,7 +56,7 @@ $(document).ready(function () {
 
         socket.on('username taken', function() {
             socket.disconnect();
-            printFeedback('Username ' + username + ' is already talking, please select another name');
+            printFeedback('User ' + username + ' is already talking, please select another name');
         });
 
         socket.on('init chat', function(data) {

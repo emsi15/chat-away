@@ -11,7 +11,7 @@ less = { env: 'development' };
 <script src="../../modernizr.js"></script>
 </head>
 	<div class='container'>
-	<img id='logo' class='logo' src='img/logoblack.png' />
+	<a href='../chat-away'><img id='logo' class='logo' src='img/logoblack.png' /></a>
 	<div id="setup">
 	<p>
 		<input id='url' value='127.0.0.1:1337'/>
@@ -23,7 +23,7 @@ less = { env: 'development' };
     	<label>Who are you?</label>
   	</div>
 
-  	<span id='feedback'></span> <br />
+  	<div id='feedback'></div> <br />
 		<button class='button' id='connect'>JOIN CHAT</button>
 	</div>
 <!-- 	<div id="settings">
@@ -32,7 +32,7 @@ less = { env: 'development' };
 	<div id="chat">
 		<div id="log"></div>
 		<div id="users">
-			<span class='users'>NOW CHATTING</span>
+			<span class='user-title'>NOW CHATTING</span>
 			<span id='userList'></span>
 		</div>
 		<input type="text" placeholder="Write your message.." id='message' />
