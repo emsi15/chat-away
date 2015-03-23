@@ -43,8 +43,11 @@ $(document).ready(function () {
 
 
     $('#connect').on('click', function(event) {
+        username = clean($('#username').val()).trim();
 
-        username = $('#username').val();
+        if (!username) {
+            printFeedback('Please select a name before joining the chat');
+        } else {
 
         socket = io.connect(host, {'forceNew':true });
 
@@ -59,7 +62,7 @@ $(document).ready(function () {
 
         socket.on('init chat', function(data) {
             toggleVisibility('logo-left');
-            displayInChat('You are now connected, type /help for available commands.', 'info');
+            displayInChat('Welcome to Chat Away, type /help for available commands.', 'info');
             disableFields(true, true, true);
             updateUsers(data);
         });
@@ -90,6 +93,7 @@ $(document).ready(function () {
             console.log('Error connecting to server: ' + err);
             socket.disconnect();
         });
+    }
     });
 
     $(document).keypress(function(e) {
@@ -132,11 +136,10 @@ $(document).ready(function () {
         } else if (message === "/quit") {
             disconnectUser();
         } else if (message === "/help") {
-            displayInChat('Welcome to Chat Away!', 'info');
             displayInChat('List of available commands:', 'info');
-            displayInChat('/pm Username Message : Sends a private message to specified user', 'info');
-            displayInChat('/me Message : IRC-style me-message broadcasted to all users', 'info');
-            displayInChat('/quit : Disconnect from chat', 'info')
+            displayInChat('*   /pm username message : Sends a private message to specified user', 'info');
+            displayInChat('*   /me message : IRC-style me-message broadcasted to all users', 'info');
+            displayInChat('*   /quit : Disconnect from chat', 'info')
         } else {
             displayInChat('Unknown command', 'error');
         }

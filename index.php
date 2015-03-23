@@ -28,7 +28,7 @@ less = { env: 'development' };
 			<span class='user-title'>NOW CHATTING</span>
 			<span id='userList'></span>
 		</div>
-		<input type="text" placeholder="Write your message.." id='message' />
+		<input type="text" placeholder="Write your message.." id='message' autofocus='autofocus' />
 	</div>
 	</div>
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>

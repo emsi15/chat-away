@@ -39,16 +39,16 @@ io.on('connection', function(socket){
 
   socket.on('new user', function (username) {
       if (username in usernames) {
-      console.log('user already exists');
-      socket.emit('username taken');
-    } else {
-      socket.username = username;
-      usernames[socket.username] = socket;
-      socket.broadcast.emit('user joined', {user: socket.username, users: Object.keys(usernames)});
-      console.log(socket.username + ' connected');  
-      userConnected = true;
-      socket.emit('init chat', Object.keys(usernames));
-    }
+        console.log('user already exists');
+        socket.emit('username taken');
+      } else {
+        socket.username = username;
+        usernames[socket.username] = socket;
+        socket.broadcast.emit('user joined', {user: socket.username, users: Object.keys(usernames)});
+        console.log(socket.username + ' connected');  
+        userConnected = true;
+        socket.emit('init chat', Object.keys(usernames));
+      }
   });
 
 });
