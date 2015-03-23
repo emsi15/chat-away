@@ -1,7 +1,6 @@
 $(document).ready(function () {
     "use strict";
     var url = document.getElementById('url'),
-        port = document.getElementById('port'),
         socket,
         username = '';
 
@@ -22,10 +21,11 @@ $(document).ready(function () {
         $('#feedback').html(feedback);
     }
 
-    function toggleVisibility() {
+    function toggleVisibility(logoClass) {
         $('#chat').toggle();
         $('#settings').toggle();
         $('#setup').toggle();
+        $('#logo').removeClass().addClass(logoClass);
     }
 
     function updateUsers(users) {
@@ -40,15 +40,15 @@ $(document).ready(function () {
         if (socket) socket.disconnect();
          displayInChat('Disconnected', 'info');
          disableFields(false, false, false, true);
-         toggleVisibility();
+         toggleVisibility('logo');
     }
 
 
     $('#connect').on('click', function(event) {
-        console.log('Connecting to: ' + url.value + ' port: ' + port.value);
+        console.log('Connecting to: ' + url.value);
         username = $('#username').val();
 
-        socket = io.connect(url.value+':'+port.value, {'forceNew':true });
+        socket = io.connect(url.value, {'forceNew':true });
 
         socket.on('connect', function() {
             socket.emit('new user', username);
@@ -60,7 +60,7 @@ $(document).ready(function () {
         });
 
         socket.on('init chat', function(data) {
-            toggleVisibility();
+            toggleVisibility('logo-left');
             displayInChat('You are now connected!', 'info');
             disableFields(true, true, true, false);
             updateUsers(data);
