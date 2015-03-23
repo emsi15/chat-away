@@ -18,7 +18,7 @@ $(document).ready(function () {
     }
 
     function printFeedback(feedback) {
-        $('#feedback').html(feedback);
+        $('#feedback').html(feedback).addClass('feedback');
     }
 
     function toggleVisibility(logoClass) {
@@ -56,12 +56,12 @@ $(document).ready(function () {
 
         socket.on('username taken', function() {
             socket.disconnect();
-            printFeedback('Username ' + username + ' is already talking, please select another name');
+            printFeedback('User ' + username + ' is already chatting, please select another name');
         });
 
         socket.on('init chat', function(data) {
             toggleVisibility('logo-left');
-            displayInChat('You are now connected!', 'info');
+            displayInChat('You are now connected, type /help for available commands.', 'info');
             disableFields(true, true, true, false);
             updateUsers(data);
         });
@@ -133,6 +133,12 @@ $(document).ready(function () {
             privateMessage(message);
         } else if (message === "/quit") {
             disconnectUser();
+        } else if (message === "/help") {
+            displayInChat('Welcome to Chat Away!', 'info');
+            displayInChat('List of available commands:', 'info');
+            displayInChat('/pm Username Message : Sends a private message to specified user', 'info');
+            displayInChat('/me Message : IRC-style me-message broadcasted to all users', 'info');
+            displayInChat('/quit : Disconnect from chat', 'info')
         } else {
             displayInChat('Unknown command', 'error');
         }

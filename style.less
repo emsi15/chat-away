@@ -1,10 +1,5 @@
 @font-family-helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-
-h3 {font-family: @font-family-helvetica;font-size:2.375em;line-height:1.1579;margin-bottom:2px;
-	color: grey; text-align: center;
-}
-
 body{
 	background-color: #5E5E5E;
 	color:#424242;
@@ -22,6 +17,10 @@ body{
 	width: 200px;
 	height: 100px;
 	margin-bottom: 20px;
+}
+
+.feedback {
+  color: red;
 }
 
 #chat {
@@ -50,17 +49,13 @@ body{
 	overflow-y: auto;
 	overflow-x: auto;
 	font-size: small;
+  width:80%;
+  margin-right: 3px;
 	padding: 8px;
 	float: left;
 	-webkit-box-shadow: 1px 0px 5px 0px rgba(50, 50, 50, 0.3);
     -moz-box-shadow:    1px 0px 5px 0px rgba(50, 50, 50, 0.3);
     box-shadow:         1px 0px 5px 0px rgba(50, 50, 50, 0.3);
-}
-
-
-#log {
-	width:80%;
-	margin-right: 3px;
 }
 
 #users {
@@ -83,7 +78,6 @@ body{
 
 .me {
 	font-weight: bold;
-	//color: #FF00FF;
 }
 
 .info {
@@ -94,7 +88,7 @@ body{
 	color: #088A08;
 }
 
-.users {
+.user-title {
 	color: #999;
 	font-weight: bold;
 }
@@ -104,10 +98,11 @@ body{
 	padding-left: 2px;
 }
 
+/* Nice looking input field, https://scotch.io/tutorials/google-material-design-input-boxes-in-css3 */
 .input-group { 
   position:relative; 
   margin-top: 30px;
-  margin-bottom:45px; 
+  margin-bottom:20px; 
   left: 335px;
 }
 
@@ -136,7 +131,6 @@ body{
   transition:0.2s ease all; 
 }
 
-/* active state */
 .input-group input:focus ~ label, input:valid ~ label     {
   top:-20px;
   font-size:14px;
@@ -160,12 +154,10 @@ body{
   right:50%; 
 }
 
-/* active state */
 input:focus ~ .bar:before, input:focus ~ .bar:after {
   width:50%;
 }
 
-/* HIGHLIGHTER ================================== */
 .highlight {
   position:absolute;
   height:60%; 
@@ -176,12 +168,10 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
   opacity:0.5;
 }
 
-/* active state */
 input:focus ~ .highlight {
   animation:inputHighlighter 0.3s ease;
 }
 
-/* ANIMATIONS ================ */
 @keyframes inputHighlighter {
   from  { background:#5264AE; }
   to    { width:0; background:transparent; }
@@ -202,7 +192,7 @@ input:focus ~ .highlight {
    -webkit-box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
    -moz-box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
    box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
-   font-family: 'Helvetica Neue',Helvetica,sans-serif;
+   font-family: @font-family-helvetica;
    text-decoration: none;
    vertical-align: middle;
    min-width:300px;
@@ -212,34 +202,25 @@ input:focus ~ .highlight {
    }
 
 .button {
-	font-family: Arial, Helvetica, sans-serif;
+  font-family: @font-family-helvetica;
 	font-size: 22px;
 	color: #ffffff;
 	padding: 10px 20px;
-	background: -moz-linear-gradient(
-		top,
-		#000000 0%,
-		#5e5d5d);
-	background: -webkit-gradient(
-		linear, left top, left bottom,
-		from(#000000),
-		to(#5e5d5d));
+	background: -moz-linear-gradient(top, #000000 0%, #5e5d5d);
+	background: -webkit-gradient(linear, left top, left bottom, from(#000000), to(#5e5d5d));
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
 	border: 1px solid #cfcfcf;
-	-moz-box-shadow:
-		0px 1px 3px rgba(000,000,000,0.5),
+	-moz-box-shadow: 0px 1px 3px rgba(000,000,000,0.5),
 		inset 0px 0px 2px rgba(255,255,255,0.7);
-	-webkit-box-shadow:
-		0px 1px 3px rgba(000,000,000,0.5),
+	-webkit-box-shadow: 0px 1px 3px rgba(000,000,000,0.5),
 		inset 0px 0px 2px rgba(255,255,255,0.7);
-	box-shadow:
-		0px 1px 3px rgba(000,000,000,0.5),
+	box-shadow: 0px 1px 3px rgba(000,000,000,0.5),
 		inset 0px 0px 2px rgba(255,255,255,0.7);
-	text-shadow:
-		0px -1px 0px rgba(000,000,000,0.4),
+	text-shadow: 0px -1px 0px rgba(000,000,000,0.4),
 		0px 1px 0px rgba(255,255,255,0.3);
+    margin-bottom: 20px;
 }
 
      
@@ -252,36 +233,4 @@ input:focus ~ .highlight {
     background: -ms-linear-gradient(top, rgba(34,34,34,1) 50%,rgba(68,68,68,1) 100%); /* IE10+ */
     background: linear-gradient(to bottom, rgba(34,34,34,1) 50%,rgba(68,68,68,1) 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#222222', endColorstr='#444444',GradientType=0 ); /* IE6-9 */
-}
-     
-.button span { 
-    position:relative; 
-    z-index:1;
-    display:block;
-    color:#ccc;
-    text-shadow:0px -2px 0px #000;
-}
- 
-     
-.button .highlight {
-    position:absolute; 
-    top:-50px; 
-    left:50%; 
-    margin-left:-250px; 
-    z-index:0; 
-    width: 500px;
-    height: 100px;
-         
-    -moz-border-radius: 250px / 50px;
-    -webkit-border-radius: 250px / 50px;
-    border-radius: 250px / 50px;
-     
-    background: rgb(0,0,0); /* Old browsers */
-    background: -moz-linear-gradient(top, rgba(255,255,255,0) 50%, rgba(255,255,255,0.2) 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,0.2))); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 50%,rgba(255,255,255,0.2) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, rgba(255,255,255,0) 50%,rgba(255,255,255,0.2) 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, rgba(255,255,255,0) 50%,rgba(255,255,255,0.2) 100%); /* IE10+ */
-    background: linear-gradient(to bottom, rgba(255,255,255,0) 50%,rgba(255,255,255,0.2) 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#33ffffff',GradientType=0 ); /* IE6-9 */
-}
+}   
