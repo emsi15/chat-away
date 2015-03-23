@@ -1,11 +1,13 @@
-﻿$(document).ready(function () {
+$(document).ready(function () {
     "use strict";
     var url = document.getElementById('url'),
         socket,
         username = '';
 
-    function display(msg) {
-        $('#log').append(new Date().toLocaleTimeString() + ': '+msg+'<br/>');
+    function displayInChat(msg, style) {
+        var log = $('#log');
+        log.append('<span class='+style+'>['+ new Date().toLocaleTimeString() + '] '+msg+'</span><br/>');
+        log.scrollTop(log.prop('scrollHeight'));
     }
 
     function disableFields(urlField, userField, connectButton, disconnectButton) {
@@ -15,10 +17,30 @@
         $('#disconnect').prop('disabled', disconnectButton);
     }
 
-    function toggleVisibility() {
+    function printFeedback(feedback) {
+        $('#feedback').html(feedback);
+    }
+
+    function toggleVisibility(logoClass) {
         $('#chat').toggle();
         $('#settings').toggle();
         $('#setup').toggle();
+        $('#logo').removeClass().addClass(logoClass);
+    }
+
+    function updateUsers(users) {
+        var userList = $('<span>');
+        $.each(users, function(i, val) {
+            userList.append('<br /><span>'+val+'</span>');
+        });
+        $('#userList').html(userList);
+    }
+
+    function disconnectUser() {
+        if (socket) socket.disconnect();
+         displayInChat('Disconnected', 'info');
+         disableFields(false, false, false, true);
+         toggleVisibility('logo');
     }
 
 
@@ -29,26 +51,41 @@
         socket = io.connect(url.value, {'forceNew':true });
 
         socket.on('connect', function() {
-            toggleVisibility();
-            display('You are now connected!');
             socket.emit('new user', username);
+        });
+
+        socket.on('username taken', function() {
+            socket.disconnect();
+            printFeedback('Username ' + username + ' is already talking, please select another name');
+        });
+
+        socket.on('init chat', function(data) {
+            toggleVisibility('logo-left');
+            displayInChat('You are now connected!', 'info');
             disableFields(true, true, true, false);
+            updateUsers(data);
         });
 
         socket.on('new message', function(data){
-            display(data.user + ': ' + data.message);
+            displayInChat(data.user + ': ' + data.message, 'msg');
         });
 
         socket.on('me', function(data){
-            display('** '+ data.user + data.message);
+            displayInChat('** '+ data.user + data.message, 'me');
+        });
+
+        socket.on('private message', function(data){
+            displayInChat('[PM] '+ data.user +': ' + data.message, 'pm');
         });
 
         socket.on('user joined', function (data) {
-            display(data + ' joined the chat');
+            displayInChat(data.user + ' joined the chat', 'info');
+            updateUsers(data.users);
         }); 
 
         socket.on('user left', function (data) {
-            display(data + ' left the chat');
+            displayInChat(data.user + ' left the chat', 'info');
+            updateUsers(data.users);
         }); 
 
         socket.io.on('connect_error', function(err) {
@@ -58,26 +95,22 @@
     });
 
     $(document).keypress(function(e) {
-        //Send message on enter
         if(e.which == 13) {
             processMessage(); 
         }
     });
 
      $('#disconnect').on('click', function(event) {
-         if (socket) socket.disconnect();
-         display('Disconnected');
-         disableFields(false, false, false, true);
-         toggleVisibility();
+         disconnectUser();
      });
 
     function processMessage() {
         var message = $('#message').val();
         //Do not do anything with empty messages
         if (message) {
-            //Check for function command starting with /, otherwise emit message.
+            //Check for function command starting with /, otherwise send ordinary message.
             if(message.match("^/")) {
-                commandControl(message);    
+                command(message);    
             } else {
                 socket.emit('new message', clean(message));                
             }
@@ -85,13 +118,24 @@
         }
     }
 
-    function commandControl(message) {
+    function privateMessage(msg) {
+        var parts = clean(msg).split(/[\s]+/);
+        var msgPart = Helper.indexJoin(parts, 2);
+        socket.emit('private message', {recipient: parts[1], msg: msgPart}, function(callback) {
+            displayInChat(callback.msg, callback.style);
+        });       
+    }
+
+    function command(message) {
         if (message.match("^/me ")) {
             socket.emit('me', clean(message).substring(3));
+        } else if (message.match("^/pm ")) {
+            privateMessage(message);
+        } else if (message === "/quit") {
+            disconnectUser();
         } else {
-            display('Unknown command');
+            displayInChat('Unknown command', 'error');
         }
-        //switch for easy adding of new cases
     }
 
     function clean(str) {

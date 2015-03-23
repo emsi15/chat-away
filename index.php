@@ -1,21 +1,47 @@
-﻿<?php $title='Chatter - Beta'; include(__DIR__ . '/../mall/header.php'); ?>
- 
-<div id='flash'>
-	<h2>Chatter</h2>
+﻿<!doctype html>
+<html lang='en' class='no-js'>
+<head>
+<meta charset='utf-8' />
+<title><?=isset($title) ? $title : 'Talk!'?></title>
+<link rel="stylesheet/less" type="text/css" href="style.less">
+<script type="text/javascript">                                    
+less = { env: 'development' };                                                                 
+</script>
+<script src="../../less.min.js"></script>
+<script src="../../modernizr.js"></script>
+</head>
+	<div class='container'>
+	<img id='logo' class='logo' src='img/logoblack.png' />
 	<div id="setup">
 	<p>
-		<label>Server: </label><input id='url' value='localhost:1337'/><br />
-		<label>Username: </label><input type="text" value='Chatter' id='username' /><br />
-		<button id='connect'>Connect</button>
+		<input id='url' value='127.0.0.1:1337'/>
 	</p>
+	<div class="input-group">      
+    	<input id='username' type="text" required>
+    	<span class="highlight"></span>
+   	 	<span class="bar"></span>
+    	<label>Who are you?</label>
+  	</div>
+
+  	<span id='feedback'></span> <br />
+		<button class='button' id='connect'>JOIN CHAT</button>
 	</div>
-	<div id="settings">
-		<button disabled id='disconnect'>Disconnect</button>
-	</div>
+<!-- 	<div id="settings">
+		<button id='disconnect'>Leave the chat</button>
+	</div> -->
 	<div id="chat">
-	<div id="log"></div>
+		<div id="log"></div>
+		<div id="users">
+			<span class='users'>NOW CHATTING</span>
+			<span id='userList'></span>
+		</div>
 		<input type="text" placeholder="Write your message.." id='message' />
 	</div>
-</div>
+	</div>
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-<?php $path=__DIR__; include(__DIR__ . '/../mall/footer.php'); ?>
+<script src="../../jquery-2.1.3.js"></script>
+<script src="../../jquery-ui.js"></script>
+<script src="../../helper.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
