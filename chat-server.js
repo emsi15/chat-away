@@ -57,18 +57,3 @@ server.listen(port, function() {
     console.log('Server listening on port: ' + port);
 });
 
-function nameTaken(name) {
-    for (var i=0; i<usernames.length; i++) {
-      if (usernames[i] === name) {
-        return true;
-      }
-    }
-    return false;
-}
-
-function removeUser(username) {
-  var index = usernames.indexOf(username);
-  if (index !== -1) {
-    usernames.splice(index, 1);
-  }
-}

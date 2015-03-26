@@ -2,7 +2,7 @@
 <html lang='en' class='no-js'>
 <head>
 <meta charset='utf-8' />
-<title><?=isset($title) ? $title : 'Talk!'?></title>
+<title>Chat Away - a socket.io chat server/client</title>
 <link rel="stylesheet/less" type="text/css" href="style.less">
 <script type="text/javascript">                                    
 less = { env: 'development' };                                                                 
