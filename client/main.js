@@ -122,7 +122,7 @@ $(document).ready(function () {
 
     function privateMessage(msg) {
         var parts = clean(msg).split(/[\s]+/);
-        var msgPart = Helper.indexJoin(parts, 2);
+        var msgPart = indexJoin(parts, 2);
         socket.emit('private message', {recipient: parts[1], msg: msgPart}, function(callback) {
             displayInChat(callback.msg, callback.style);
         });       
@@ -149,6 +149,9 @@ $(document).ready(function () {
         return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
+    function indexJoin(array, startIndex) {
+        return array.slice(startIndex, array.length).join(" ");
+    } 
     
 });
 
