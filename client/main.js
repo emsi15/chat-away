@@ -142,8 +142,9 @@ $(document).ready(function () {
             disconnectUser();
         } else if (msg === "/help") {
             displayInChat('List of available commands:', 'info');
-            displayInChat('*   /pm username message : Sends a private message to specified user', 'info');
             displayInChat('*   /me message : IRC-style me-message broadcasted to all users', 'info');
+            displayInChat('*   /nick username : Change your username', 'info');
+            displayInChat('*   /pm username message : Sends a private message to specified user', 'info');
             displayInChat('*   /quit : Disconnect from chat', 'info')
         } else if (msg.match("^/nick ")) {
             socket.emit('switch username', clean(msg).substring(5).trim(), function(callback) {
