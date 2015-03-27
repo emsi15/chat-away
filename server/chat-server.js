@@ -51,6 +51,18 @@ io.on('connection', function(socket){
       }
   });
 
+  socket.on('switch username', function(newName, callback) {
+    if (newName in usernames) {
+      callback({msg: 'Username ' + newName +' already exists!', style: 'error'})
+    } else {
+      var oldName = socket.username;
+      delete usernames[socket.username];
+      socket.username = newName;
+      usernames[socket.username] = socket;
+      io.emit('switched username', {oldName: oldName, newName: socket.username, users: Object.keys(usernames)});
+    }
+  });
+
 });
 
 server.listen(port, function() {

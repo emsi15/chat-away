@@ -67,15 +67,15 @@ $(document).ready(function () {
             updateUsers(data);
         });
 
-        socket.on('new message', function(data){
+        socket.on('new message', function (data) {
             displayInChat(data.user + ': ' + data.message, 'msg');
         });
 
-        socket.on('me', function(data){
+        socket.on('me', function (data) {
             displayInChat('** '+ data.user + data.message, 'me');
         });
 
-        socket.on('private message', function(data){
+        socket.on('private message', function (data) {
             displayInChat('[PM] '+ data.user +': ' + data.message, 'pm');
         });
 
@@ -88,6 +88,11 @@ $(document).ready(function () {
             displayInChat(data.user + ' left the chat', 'info');
             updateUsers(data.users);
         }); 
+
+        socket.on('switched username', function (data) {
+            displayInChat(data.oldName + ' changed name to ' + data.newName, 'info');
+            updateUsers(data.users);
+        })
 
         socket.io.on('connect_error', function(err) {
             console.log('Error connecting to server: ' + err);
@@ -128,20 +133,24 @@ $(document).ready(function () {
         });       
     }
 
-    function command(message) {
-        if (message.match("^/me ")) {
-            socket.emit('me', clean(message).substring(3));
-        } else if (message.match("^/pm ")) {
-            privateMessage(message);
-        } else if (message === "/quit") {
+    function command(msg) {
+        if (msg.match("^/me ")) {
+            socket.emit('me', clean(msg).substring(3));
+        } else if (msg.match("^/pm ")) {
+            privateMessage(msg);
+        } else if (msg === "/quit") {
             disconnectUser();
-        } else if (message === "/help") {
+        } else if (msg === "/help") {
             displayInChat('List of available commands:', 'info');
             displayInChat('*   /pm username message : Sends a private message to specified user', 'info');
             displayInChat('*   /me message : IRC-style me-message broadcasted to all users', 'info');
             displayInChat('*   /quit : Disconnect from chat', 'info')
+        } else if (msg.match("^/nick ")) {
+            socket.emit('switch username', clean(msg).substring(5).trim(), function(callback) {
+                displayInChat(callback.msg, callback.style);
+            });
         } else {
-            displayInChat('Unknown command', 'error');
+            displayInChat('Unknown command', 'error'); 
         }
     }
 
