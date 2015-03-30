@@ -96,6 +96,7 @@ $(document).ready(function () {
 
         socket.io.on('connect_error', function(err) {
             console.log('Error connecting to server: ' + err);
+            printFeedback('Host ' + host + " is offline at the moment");
             socket.disconnect();
         });
     }
