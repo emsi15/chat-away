@@ -4,44 +4,6 @@ $(document).ready(function () {
         host = '127.0.0.1:1337',
         username = '';
 
-    function displayInChat(msg, style) {
-        var log = $('#log');
-        log.append('<span class='+style+'>['+ new Date().toLocaleTimeString() + '] '+msg+'</span><br/>');
-        log.scrollTop(log.prop('scrollHeight'));
-    }
-
-    function disableFields(urlField, userField, connectButton) {
-        $('#url').prop('disabled', urlField);
-        $('#username').prop('disabled', userField);
-        $('#connect').prop('disabled', connectButton);
-    }
-
-    function printFeedback(feedback) {
-        $('#feedback').html(feedback).addClass('feedback');
-    }
-
-    function toggleVisibility(logoClass) {
-        $('#chat').toggle();
-        $('#setup').toggle();
-        $('#logo').removeClass().addClass(logoClass);
-    }
-
-    function updateUsers(users) {
-        var userList = $('<span>');
-        $.each(users, function(i, val) {
-            userList.append('<br /><span>'+val+'</span>');
-        });
-        $('#userList').html(userList);
-    }
-
-    function disconnectUser() {
-        if (socket) socket.disconnect();
-         displayInChat('Disconnected', 'info');
-         disableFields(false, false, false);
-         toggleVisibility('logo');
-    }
-
-
     $('#connect').on('click', function(event) {
         username = clean($('#username').val()).trim();
 
@@ -112,6 +74,43 @@ $(document).ready(function () {
          disconnectUser();
      });
 
+    function displayInChat(msg, style) {
+        var log = $('#log');
+        log.append('<span class='+style+'>['+ new Date().toLocaleTimeString() + '] '+msg+'</span><br/>');
+        log.scrollTop(log.prop('scrollHeight'));
+    }
+
+    function disableFields(urlField, userField, connectButton) {
+        $('#url').prop('disabled', urlField);
+        $('#username').prop('disabled', userField);
+        $('#connect').prop('disabled', connectButton);
+    }
+
+    function printFeedback(feedback) {
+        $('#feedback').html(feedback).addClass('feedback');
+    }
+
+    function toggleVisibility(logoClass) {
+        $('#chat').toggle();
+        $('#setup').toggle();
+        $('#logo').removeClass().addClass(logoClass);
+    }
+
+    function updateUsers(users) {
+        var userList = $('<span>');
+        $.each(users, function(i, val) {
+            userList.append('<br /><span>'+val+'</span>');
+        });
+        $('#userList').html(userList);
+    }
+
+    function disconnectUser() {
+        if (socket) socket.disconnect();
+         displayInChat('Disconnected', 'info');
+         disableFields(false, false, false);
+         toggleVisibility('logo');
+    }
+
     function processMessage() {
         var message = $('#message').val();
         //Do not do anything with empty messages
@@ -163,6 +162,8 @@ $(document).ready(function () {
     function indexJoin(array, startIndex) {
         return array.slice(startIndex, array.length).join(" ");
     } 
+
+
     
 });
 
