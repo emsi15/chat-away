@@ -4,6 +4,76 @@ $(document).ready(function () {
         host = '127.0.0.1:1337',
         username = '';
 
+    $('#connect').on('click', function(event) {
+        username = clean($('#username').val()).trim();
+
+        if (!username) {
+            printFeedback('Please select a name before joining the chat');
+        } else {
+
+        socket = io.connect(host, {'forceNew':true });
+
+        socket.on('connect', function() {
+            socket.emit('new user', username);
+        });
+
+        socket.on('username taken', function() {
+            socket.disconnect();
+            printFeedback('User ' + username + ' is already chatting, please select another name');
+        });
+
+        socket.on('init chat', function(data) {
+            toggleVisibility('logo-left');
+            displayInChat('Welcome to Chat Away, type /help for available commands.', 'info');
+            disableFields(true, true, true);
+            updateUsers(data);
+        });
+
+        socket.on('new message', function (data) {
+            displayInChat(data.user + ': ' + data.message, 'msg');
+        });
+
+        socket.on('me', function (data) {
+            displayInChat('** '+ data.user + data.message, 'me');
+        });
+
+        socket.on('private message', function (data) {
+            displayInChat('[PM] '+ data.user +': ' + data.message, 'pm');
+        });
+
+        socket.on('user joined', function (data) {
+            displayInChat(data.user + ' joined the chat', 'info');
+            updateUsers(data.users);
+        }); 
+
+        socket.on('user left', function (data) {
+            displayInChat(data.user + ' left the chat', 'info');
+            updateUsers(data.users);
+        }); 
+
+        socket.on('switched username', function (data) {
+            displayInChat(data.oldName + ' changed name to ' + data.newName, 'info');
+            updateUsers(data.users);
+        })
+
+        socket.io.on('connect_error', function(err) {
+            console.log('Error connecting to server: ' + err);
+            printFeedback('Host ' + host + " is offline at the moment");
+            socket.disconnect();
+        });
+    }
+    });
+
+    $(document).keypress(function(e) {
+        if(e.which == 13) {
+            processMessage(); 
+        }
+    });
+
+     $('#disconnect').on('click', function(event) {
+         disconnectUser();
+     });
+
     function displayInChat(msg, style) {
         var log = $('#log');
         log.append('<span class='+style+'>['+ new Date().toLocaleTimeString() + '] '+msg+'</span><br/>');
@@ -41,71 +111,6 @@ $(document).ready(function () {
          toggleVisibility('logo');
     }
 
-
-    $('#connect').on('click', function(event) {
-        username = clean($('#username').val()).trim();
-
-        if (!username) {
-            printFeedback('Please select a name before joining the chat');
-        } else {
-
-        socket = io.connect(host, {'forceNew':true });
-
-        socket.on('connect', function() {
-            socket.emit('new user', username);
-        });
-
-        socket.on('username taken', function() {
-            socket.disconnect();
-            printFeedback('User ' + username + ' is already chatting, please select another name');
-        });
-
-        socket.on('init chat', function(data) {
-            toggleVisibility('logo-left');
-            displayInChat('Welcome to Chat Away, type /help for available commands.', 'info');
-            disableFields(true, true, true);
-            updateUsers(data);
-        });
-
-        socket.on('new message', function(data){
-            displayInChat(data.user + ': ' + data.message, 'msg');
-        });
-
-        socket.on('me', function(data){
-            displayInChat('** '+ data.user + data.message, 'me');
-        });
-
-        socket.on('private message', function(data){
-            displayInChat('[PM] '+ data.user +': ' + data.message, 'pm');
-        });
-
-        socket.on('user joined', function (data) {
-            displayInChat(data.user + ' joined the chat', 'info');
-            updateUsers(data.users);
-        }); 
-
-        socket.on('user left', function (data) {
-            displayInChat(data.user + ' left the chat', 'info');
-            updateUsers(data.users);
-        }); 
-
-        socket.io.on('connect_error', function(err) {
-            console.log('Error connecting to server: ' + err);
-            socket.disconnect();
-        });
-    }
-    });
-
-    $(document).keypress(function(e) {
-        if(e.which == 13) {
-            processMessage(); 
-        }
-    });
-
-     $('#disconnect').on('click', function(event) {
-         disconnectUser();
-     });
-
     function processMessage() {
         var message = $('#message').val();
         //Do not do anything with empty messages
@@ -128,20 +133,25 @@ $(document).ready(function () {
         });       
     }
 
-    function command(message) {
-        if (message.match("^/me ")) {
-            socket.emit('me', clean(message).substring(3));
-        } else if (message.match("^/pm ")) {
-            privateMessage(message);
-        } else if (message === "/quit") {
+    function command(msg) {
+        if (msg.match("^/me ")) {
+            socket.emit('me', clean(msg).substring(3));
+        } else if (msg.match("^/pm ")) {
+            privateMessage(msg);
+        } else if (msg === "/quit") {
             disconnectUser();
-        } else if (message === "/help") {
+        } else if (msg === "/help") {
             displayInChat('List of available commands:', 'info');
-            displayInChat('*   /pm username message : Sends a private message to specified user', 'info');
             displayInChat('*   /me message : IRC-style me-message broadcasted to all users', 'info');
+            displayInChat('*   /nick username : Change your username', 'info');
+            displayInChat('*   /pm username message : Sends a private message to specified user', 'info');
             displayInChat('*   /quit : Disconnect from chat', 'info')
+        } else if (msg.match("^/nick ")) {
+            socket.emit('switch username', clean(msg).substring(5).trim(), function(callback) {
+                displayInChat(callback.msg, callback.style);
+            });
         } else {
-            displayInChat('Unknown command', 'error');
+            displayInChat('Unknown command', 'error'); 
         }
     }
 
@@ -152,6 +162,8 @@ $(document).ready(function () {
     function indexJoin(array, startIndex) {
         return array.slice(startIndex, array.length).join(" ");
     } 
+
+
     
 });
 

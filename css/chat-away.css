@@ -33,29 +33,39 @@ of those sections to manage the look and feel of the site. */
 
 .about-section {
     height: 100%;
-    padding-top: 150px;
-    text-align: center;
+    padding-top: 125px;
     background: #fff;
+    font-size: 1.4em;
+}
+
+.about-section p {
+    margin-left: 15%;
+}
+
+.about-buttons {
+    margin-top: 40px;
+    text-align: center;
 }
 
 .server-section {
     height: 100%;
-    padding-top: 150px;
+    padding-top: 100px;
     text-align: center;
     background: #5E5E5E;
     color: #eee;
+    font-size: 1.2em;
 }
 
 .client-section {
     height: 100%;
-    padding-top: 150px;
+    padding-top: 100px;
     text-align: center;
     background: #fff;
 }
 
 .contact-section {
     height: 100%;
-    padding-top: 150px;
+    padding-top: 100px;
     text-align: center;
     background: #5E5E5E;
     color: #eee;
@@ -64,4 +74,6 @@ of those sections to manage the look and feel of the site. */
 .big-logo {
   width: 500px;
   height: 250px;
+  display: block;
+  margin: auto;
 }
