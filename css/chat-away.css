@@ -50,7 +50,6 @@ of those sections to manage the look and feel of the site. */
 .server-section {
     height: 100%;
     padding-top: 100px;
-    text-align: center;
     background: #5E5E5E;
     color: #eee;
     font-size: 1.2em;
@@ -59,16 +58,24 @@ of those sections to manage the look and feel of the site. */
 .client-section {
     height: 100%;
     padding-top: 100px;
-    text-align: center;
     background: #fff;
+}
+
+.client-section img {
+    width: 55%;
+    border: 1px solid;
+    border-radius: 10px;
+    float: left;
+    margin-right: 10px;
 }
 
 .contact-section {
     height: 100%;
     padding-top: 100px;
-    text-align: center;
     background: #5E5E5E;
     color: #eee;
+    font-size: 1.2em;
+
 }
 
 .big-logo {
@@ -76,4 +83,13 @@ of those sections to manage the look and feel of the site. */
   height: 250px;
   display: block;
   margin: auto;
+}
+
+.link a {
+    color: #eee;
+    text-decoration: underline;
+}
+
+.link a:hover {
+    color: #999;
 }

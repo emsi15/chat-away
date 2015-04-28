@@ -142,7 +142,7 @@ $(document).ready(function () {
             disconnectUser();
         } else if (msg === "/help") {
             displayInChat('List of available commands:', 'info');
-            displayInChat('*   /me message : IRC-style me-message broadcasted to all users', 'info');
+            displayInChat('*   /me message : Action message broadcasted to all users', 'info');
             displayInChat('*   /nick username : Change your username', 'info');
             displayInChat('*   /pm username message : Sends a private message to specified user', 'info');
             displayInChat('*   /quit : Disconnect from chat', 'info')
