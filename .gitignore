@@ -48,3 +48,6 @@ css/**
 fonts/
 img/
 js/
+
+/index.html
+/.gitignore
