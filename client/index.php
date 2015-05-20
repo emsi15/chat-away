@@ -10,7 +10,7 @@ less = { env: 'development' };
 <script src="js/less.min.js"></script>
 </head>
 	<div class='container'>
-	<a href='../client'><img id='logo' class='logo' src='../img/logoblack.png' /></a>
+	<a href='../client'><img id='logo' class='logo' src='img/logoblack.png' /></a>
 	<div id="setup">
 		<div class="input-group">      
 	    	<input id='username' type="text" required>
