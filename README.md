@@ -78,7 +78,7 @@ socket.emit('init chat', Object.keys(usernames));
 **socket.on('new message', function (msg){}):**  
 Broadcasting a new message to all connected users by returning:   
 ```
- io.emit('new message', {user: socket.username, message: msg});
+io.emit('new message', {user: socket.username, message: msg});
 ```
 
 
@@ -91,7 +91,7 @@ io.emit('me', {user: socket.username, message: msg});
 **socket.on('private message', function (data, callback){}):**  
 Checks if recipient is available on the server. If available a private message is sent to the user through:  
 ```
- usernames[recipient].emit('private message', {user: socket.username, message: msg});
+usernames[recipient].emit('private message', {user: socket.username, message: msg});
 ```  
 If user does not exist, an error callback is being sent back that the client may handle:  
 ```
@@ -101,7 +101,7 @@ callback({msg: 'Error: User ' + recipient + ' is not in the chat', style: 'error
 **socket.on('switch username', function (newName, callback){}):**  
 Checks if username already exists in the chat. If so, an error callback is being returned by the server:  
 ```
-      callback({msg: 'Username ' + newName +' already exists!', style: 'error'})
+callback({msg: 'Username ' + newName +' already exists!', style: 'error'})
 ```  
 If username is available, the old and new username is being sent back to the client together with a refreshed list of all available users on the server:
 ```
