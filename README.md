@@ -1,5 +1,6 @@
 ## Chat Away
  
+<a id="instructions"></a>
 ### How to use the server
 
 - You need Node.js installed to be able to run the server.
@@ -42,6 +43,7 @@ Now, just pick a username and start chatting!
 Do you want to build your own client to chat with?  
 Check the [Server API](#api) to learn more about the events that can be sent and received by the server.
 
+<a id="upcoming"></a>
 ### Upcoming features
 Here is a few features that are currently being developed and hopefully will be released in the near future.
 
