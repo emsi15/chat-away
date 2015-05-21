@@ -54,7 +54,8 @@ Here is a few features that are currently being developed and hopefully will be 
 Currently known issues can be found in [Issues](https://github.com/emsi15/chat-away/issues "Issues").
 Feel free to submit an issue if you find something that seems strange.
 
-### Server API <a id="api"></a>
+<a id="api"></a>
+### Server API 
 
 The server listens to events sent by the client. You should be familiar with how socket.io events work if you want to build your own implementation. Here is a detailed walkthrough of the events supported by the server: 
 
@@ -62,7 +63,7 @@ The server listens to events sent by the client. You should be familiar with how
 Checks if the connecting 'username' is allowed to join the server.  
 If the username exists the server return:  
 ```
-socket.emit('username taken')
+socket.emit('username taken');
 ```  
 If not, two events are being returned to the client. 
 The first one contains the new user together with a list of all currently connected users:
@@ -101,7 +102,7 @@ callback({msg: 'Error: User ' + recipient + ' is not in the chat', style: 'error
 **socket.on('switch username', function (newName, callback){}):**  
 Checks if username already exists in the chat. If so, an error callback is being returned by the server:  
 ```
-callback({msg: 'Username ' + newName +' already exists!', style: 'error'})
+callback({msg: 'Username ' + newName +' already exists!', style: 'error'});
 ```  
 If username is available, the old and new username is being sent back to the client together with a refreshed list of all available users on the server:
 ```
