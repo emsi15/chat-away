@@ -70,10 +70,6 @@ $(document).ready(function () {
         }
     });
 
-     $('#disconnect').on('click', function(event) {
-         disconnectUser();
-     });
-
     function displayInChat(msg, style) {
         var log = $('#log');
         log.append('<span class='+style+'>['+ new Date().toLocaleTimeString() + '] '+msg+'</span><br/>');
